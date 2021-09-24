@@ -13,6 +13,3 @@
 - get Matt's simulation code on github
 - get inputs ready
 - write up Kyle's probability information
-
-# Important Questions
-- What is the value of a coin?
