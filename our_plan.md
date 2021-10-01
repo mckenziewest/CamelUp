@@ -33,3 +33,5 @@
 - get Matt G's simulation code on github
 - write up Kyle's probability information
 - add Kyle's write-up to github
+- focus on turn 1 and strategies for that
+- Matt D: simulation in R
