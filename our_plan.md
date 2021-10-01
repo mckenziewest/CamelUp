@@ -5,11 +5,11 @@
 - Do we have to care about the crazy camels?
    - Probably not, chances are so low for them to carry anything.
 - What strategies should we use when laying the desert tiles?
-   - Play to your overall bids.
+   - Play to your overall bids and against your opponents'.
 - Get simulation with inputs given simulation - something we can play games using.
-- How do we decide how "good" something is.
+- How do we decide how "good" something is?
 - Use probability computations to generalize to other situations.
-- Can information about some situations apply to others.  For example:
+- Can information about some situations apply to others?  For example:
     ```
     x
     x _ x
@@ -20,7 +20,7 @@
     x
     x _ x
     ```
-- General strategy per leg of race.
+- :star: General strategy per leg of race.
     - On average how many turns will it take for the game to end?
     - How does number of players affect number of turns?
 - Is it correct to avoid bidding on camels in the middle of the pack?
@@ -31,5 +31,5 @@
 
 - get github desktop app installed, permissions granted and repo cloned
 - get Matt G's simulation code on github
-- (done) write up Kyle's probability information
+- write up Kyle's probability information
 - add Kyle's write-up to github
