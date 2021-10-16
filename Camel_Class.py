@@ -1,28 +1,37 @@
 import random
 #defining camels
 class Camel:
-    colors = ["Red",'Blue',"Green","Yellow","Purple","Orange", "White", "Black"]
-    c = colors.pop(random.randint(0,len(colors)-1))
-    s = 0
-    a = colors.pop(random.randint(0,len(colors)-1))
-    b = colors.pop(random.randint(0,len(colors)-1))
     #attributes
-    def __init__(self, color = c, space = s, above = a, below = b):
+    def __init__(self, color = None, above = None, below = None, space = 0):
         self.color = color
-        self.space = space
         self.above = above
         self.below = below
-    def get_color(self):
-        return self.color       
+        self.space = space
+    
+    #functions
+    def get_color(self)
+        return self.color
+    
+    
+    def get_above(self):
+        return self.above
+    
+    
+    def get_below(self):
+        return self.above()
+   
+    
+    def new_above(self,newabove):
+        self.above = newabove
+    
+    
+    def new_below(self,newbelow):
+        self.below = newbelow
+    
+    
     def roll(self):
         die = random.randint(1,3)
         if self.color == "Black" or self.color == 'White':
             self.space -= die
         else:
             self.space += die
-        print(self.space)
-camel = Camel()
-camel.get_color()
-camel.roll()
-camel.change_space()
-#Need to figure out how to get this to interact with other camels for movement
