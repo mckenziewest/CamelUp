@@ -130,8 +130,7 @@ dmypy.json
 
 
 # TeX Stuff
-.aux
-.bbl
-.blg
-.log
-.synctex.gz
+*.aux
+*.bbl
+*.blg
+*.gz
