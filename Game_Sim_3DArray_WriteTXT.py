@@ -140,7 +140,7 @@ def ResetCamelClass(): #DONT TOUCH
             Color_Dict[Color_List[camel]].Change_Height(1)
             Color_Dict[Color_List[camel]].Change_Position(-Color_Dict[Color_List[camel]].position)
 
-def PLAY_GAME(): #DONE
+def PLAY_GAME(UserInputList): #DONE
     Color_List = ["RED", "BLUE", "GREEN", "YELLOW", "PURPLE"] 
     Color_Dict = {"RED":red, "BLUE":blue, "GREEN":green, "PURPLE":purple, "YELLOW":yellow, "BLACK":black, "WHITE":white}
     Color_Dict_CapLow = {'Blue':"BLUE", 'Red':"RED", 'Purple':"PURPLE", 'Yellow':"YELLOW", 'Green':"GREEN"}
@@ -249,20 +249,20 @@ def PLAY_GAME(): #DONE
 
         return Second_Dict
 
-    def OPTION_2_INPUT_DATA(): #return Second_Dict
-        NewListInput = """[['Blue', 'Red', 'Purple', 'Yellow', 'Green'], [3, 3, 2, 2, 2], [2, 1, 3, 2, 1]]
+    def OPTION_2_INPUT_DATA(UserInputList): #return Second_Dict
+        NewListInput = UserInputList
         for number in range(0,5):
             Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Set_Position(NewListInput[1][number])
             Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Height(NewListInput[2][number])
             if number == 0:
                 Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
-                if NewListInput[2][number] > 1:
+                if NewListInput[2][0] > 1:
                     Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(Color_Dict_CapLow[NewListInput[0][1]])
                 else:
                     Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(None)
             elif number == 4:
                 Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(None)
-                if NewListInput[2][number-1] > 1:
+                if NewListInput[2][3] > 1:
                     Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(Color_Dict_CapLow[NewListInput[0][3]])
                 else:
                     Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
@@ -281,41 +281,40 @@ def PLAY_GAME(): #DONE
                         Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(Color_Dict_CapLow[NewListInput[0][number-1]])
 
             First_Dict[NewListInput[1][number]] = True
-            Second_Dict[NewListInput[2][number]] = 1 + Second_Dict[NewListInput[2][number]]"""
+            Second_Dict[NewListInput[1][number]] = 1 + Second_Dict[NewListInput[1][number]]
 
-
-        First_Dict = {                   #delete                                                      #Dict to reconize if spaces are taken
-            1:False, 2:True, 3:True, 4:False, 5:False, 6:False, 7:False, 8:False, 
+        Love = """First_Dict = {                   #delete                                                      #Dict to reconize if spaces are taken
+            1:True, 2:True, 3:True, 4:False, 5:False, 6:False, 7:False, 8:False, 
             9:False, 10:False, 11:False, 12:False, 13:False, 14:False, 15:True, 16:True, 17:False
         }
         Second_Dict = {                 #delete                                          #Dict for heights on each space
-            1:0, 2:3, 3:2, 4:0, 5:0, 6:0, 7:0, 8:0, 
+            1:2, 2:1, 3:2, 4:0, 5:0, 6:0, 7:0, 8:0, 
             9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:1, 16:1, 17:0
         } 
-        red.Set_Position(3)
+        red.Set_Position(1)
         red.Change_Height(1)
         red.Change_Camel_Above("BLUE")   #COLOR or None
         red.Change_Camel_Below(None)   #COLOR or None
     
-        blue.Set_Position(3)
+        blue.Set_Position(1)
         blue.Change_Height(2)
         blue.Change_Camel_Above(None)  #COLOR or None
         blue.Change_Camel_Below("RED")  #COLOR or None
 
         green.Set_Position(2)
         green.Change_Height(1)
-        green.Change_Camel_Above("YELLOW") #COLOR or None
+        green.Change_Camel_Above(None) #COLOR or None
         green.Change_Camel_Below(None) #COLOR or None
 
-        purple.Set_Position(2)
-        purple.Change_Height(3)
+        purple.Set_Position(3)
+        purple.Change_Height(2)
         purple.Change_Camel_Above(None) #COLOR or None
         purple.Change_Camel_Below("YELLOW") #COLOR or None
     
-        yellow.Set_Position(2)
-        yellow.Change_Height(2)
+        yellow.Set_Position(3)
+        yellow.Change_Height(1)
         yellow.Change_Camel_Above("PURPLE") #COLOR or None
-        yellow.Change_Camel_Below("GREEN") #COLOR or None
+        yellow.Change_Camel_Below(None) #COLOR or None"""
 
         black.Set_Position(16)
         black.Change_Height(1)
@@ -331,7 +330,7 @@ def PLAY_GAME(): #DONE
         First_Dict[15] = True
         Second_Dict[15] = 1
 
-        return Second_Dict
+        return Second_Dict 
 
     #### CHANGEING RETURN INTO USEABLE First_Dict & Second_Dict ####
 
@@ -344,7 +343,7 @@ def PLAY_GAME(): #DONE
     # OPTION 2) Allows for a set game state     #
     #############################################
 
-    Second_Dict = OPTION_2_INPUT_DATA() #Either OPTION_1_RANDOM_DATA() or OPTION_2_INPUT_DATA()
+    Second_Dict = OPTION_2_INPUT_DATA(UserInputList) #Either OPTION_1_RANDOM_DATA() or OPTION_2_INPUT_DATA()
 
     for i in range(1, 18):
         if Second_Dict[i] != 0:
@@ -721,13 +720,13 @@ def PLAY_GAME(): #DONE
         #print("\nWinner Camel: {}     Number of Rounds: {}".format(Color.color, Final_Round))   
     return Printable_Array_List
     
-def OrderingGameOutput(): #WORKS
+def OrderingGameOutput(UserInputList): #WORKS
     
     #### RESET ALL CAMEL VALUES ####
     ResetCamelClass()
 
     #### START TO PLAY GAMES ####
-    List_From_Game = PLAY_GAME() #this is the list that is returned by PLAYGAME
+    List_From_Game = PLAY_GAME(UserInputList) #this is the list that is returned by PLAYGAME
     List_In_Order = []
     List_in_order_color = []
     List_in_order_position = []
@@ -783,10 +782,10 @@ def WriteToTXTFile(ListFromRound): #DONE
         file.writelines("\n")
         file.writelines(Data)
 
-def NumberOfGamesRan(): #DONE
+def NumberOfGamesRan(UserInputList): #DONE
     Number = int(input("How many games should be played (ex. 3): "))
     for rounds in range(0,Number):
-        WriteToTXTFile(OrderingGameOutput())
+        WriteToTXTFile(OrderingGameOutput(UserInputList))
 
 def RunOutputTXTFileProbability(): #returns probability #DONE
     CorrectOrientationList = []
@@ -831,8 +830,15 @@ def CreateTable(InputList): #NOT DONE
     Headings = ["1st Place","2nd Place", "3rd Place", "4th Place", "5th PLace"]
     #### PUT ON HOLD, NOT AS USEFUL ANYMORE ####
 
- 
-
+def RunOrAnalyzeGames():
+    choice = input("Do you wish to play games ('P') or anaylze previosuly played games ('A'). Type P or A: ")
+    if choice == "P":
+        UserInputList = input("Starting position list such as [['Blue', 'Red', 'Purple', 'Yellow', 'Green'], [3, 3, 2, 2, 2], [2, 1, 3, 2, 1]]: ")
+        UserInputList = ast.literal_eval(UserInputList)
+        ## [['Purple', 'Yellow', 'Green', 'Blue', 'Red'], [3, 3, 2, 1, 1], [2, 1, 1, 2, 1]]
+        NumberOfGamesRan(UserInputList)
+    else:
+        print(RunOutputTXTFileProbability())
 
 #### GLOBAL ASSIGNMENT ####
 
@@ -843,6 +849,14 @@ yellow = Camel("YELLOW")
 purple = Camel("PURPLE")
 black = Camel("BLACK")
 white = Camel("WHITE")
+RunOrAnalyzeGames()
 
-#NumberOfGamesRan() # \\ RUNS GAMES
-print(RunOutputTXTFileProbability())# \\ RUNS PROBABILITY
+    #############################################
+    #  BEFORE RUNNING                           #
+    #   1) CHECK LINE 801                       #
+    #      This line but be the file path to    #
+    #      where the Output_For_CamelUp.txt     #
+    #      is saved to. Replace the string with #
+    #      your file path                       #
+    #                                           #
+    #############################################
