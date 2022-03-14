@@ -2,18 +2,10 @@
 from builtins import float
 import random
 import pandas as pd
-#import csv   
 from csv import writer
 import numpy as np
-#from prettytable import PrettyTable
 import os
-
-
-
-#import docx
-#import os
-#from datetime import date
-#import xlsxwriter
+import ast
 
 
 def Output_Board(Round):
@@ -102,39 +94,6 @@ def READ_IN_UPDATE_EXCEL_File():
     Number_of_Games = int(input("How many games would you like played: "))
     for a in range(0,Number_of_Games):
         PLAY_GAME()                                     #funtion to play our game
-        
-
-
-    #throw back in csv file
-
-
-
-
-
-
-    #list_data=['03','Smith','Science']
-   
-    #with open('CSVFILE.csv', 'wb') as f_object:  
-    #    writer_object = writer(f_object)
-    #    writer_object.writerow(list_data)  
-    #    f_object.close()
-
-#    fields=['first','second','third']
-#    with open(r'Camel_Up_Excel_Findings.csv', 'a', newline='') as f:
-#        writer = csv.writer(f)
-#        writer.writerow(fields)
-#        f.close()
-
-#    with open(r'Camel_Up_Excel_Findings.csv', 'a', newline='') as csvfile:
-#        fieldnames = ['This','aNew']
-#        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-#        writer.writerow({'This':'is', 'aNew':'Row'})
-
-
-
-
-
-
 
 class Camel:
 
@@ -163,7 +122,10 @@ class Camel:
     def Change_Position_B_or_W(self, Number):
         self.position -= Number #subtracting whatever was roled
 
-def ResetCamelClass():
+    def Set_Position(self, Number):
+        self.position = Number
+
+def ResetCamelClass(): #DONT TOUCH
     Color_List = ["RED", "BLUE", "GREEN", "YELLOW", "PURPLE", "BLACK", "WHITE"] 
     Color_Dict = {"RED":red, "BLUE":blue, "GREEN":green, "PURPLE":purple, "YELLOW":yellow, "BLACK":black, "WHITE":white}
     for camel in range(0,len(Color_List)):
@@ -178,109 +140,215 @@ def ResetCamelClass():
             Color_Dict[Color_List[camel]].Change_Height(1)
             Color_Dict[Color_List[camel]].Change_Position(-Color_Dict[Color_List[camel]].position)
 
-def PLAY_GAME():
+def PLAY_GAME(): #DONE
     Color_List = ["RED", "BLUE", "GREEN", "YELLOW", "PURPLE"] 
-    Color_Dict = {
-        "RED":red, "BLUE":blue, "GREEN":green, "PURPLE":purple, "YELLOW":yellow, "BLACK":black, "WHITE":white
-    }
-    First_Dict = {                                                                        #Dict to reconize if spaces are taken
-        1:False, 2:False, 3:False, 4:False, 5:False, 6:False, 7:False, 8:False, 
-        9:False, 10:False, 11:False, 12:False, 13:False, 14:False, 15:False, 16:False, 17:False
-    }
-    Second_Dict = {                                                           #Dict for heights on each space
-        1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 
-        9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0
-    }
+    Color_Dict = {"RED":red, "BLUE":blue, "GREEN":green, "PURPLE":purple, "YELLOW":yellow, "BLACK":black, "WHITE":white}
+    Color_Dict_CapLow = {'Blue':"BLUE", 'Red':"RED", 'Purple':"PURPLE", 'Yellow':"YELLOW", 'Green':"GREEN"}
     Color_Def_Dict = {
         "RED":Print_Red(), "BLUE":Print_Blue(), "GREEN":Print_Green(), "PURPLE":Print_Purple(), 
         "YELLOW":Print_Yellow(), "BLACK":Print_Black(), "WHITE":Print_White()
-    }
-
+    } #never used anymore
+    First_Dict = {                                                                        #Dict to reconize if spaces are taken
+        1:False, 2:False, 3:False, 4:False, 5:False, 6:False, 7:False, 8:False, 
+        9:False, 10:False, 11:False, 12:False, 13:False, 14:False, 15:False, 16:False, 17:False
+        }   
+    Second_Dict = {                                                           #Dict for heights on each space
+        1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 
+        9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0
+        }
     Printable_Array_List = []
 
+    def OPTION_1_RANDOM_DATA(): #return Second_Dict
+        First_Dict = {                                                                        #Dict to reconize if spaces are taken
+            1:False, 2:False, 3:False, 4:False, 5:False, 6:False, 7:False, 8:False, 
+            9:False, 10:False, 11:False, 12:False, 13:False, 14:False, 15:False, 16:False, 17:False
+        }
+        Second_Dict = {                                                           #Dict for heights on each space
+            1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 
+            9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0, 17:0
+        }
 
-    for i in range(0,5): #set up
-        Appended_Color = random.choice(Color_List) #picks color from Color_List
-        Color_List.remove(Appended_Color)
-        Rolled_Number = random.randint(1,3) #1,2,3
-        Picked_Color = Color_Dict[Appended_Color]
+        for i in range(0,5): #set up
+            Appended_Color = random.choice(Color_List) #picks color from Color_List
+            Color_List.remove(Appended_Color)
+            Rolled_Number = random.randint(1,3) #1,2,3
+            Picked_Color = Color_Dict[Appended_Color]
 
-        if (red.position == Rolled_Number) and (red.camel_above == None): #check occupied space, check if camel is above
-            red.Change_Camel_Above(Appended_Color) #changing None to string color
-            Picked_Color.Change_Camel_Below("RED") 
-            Picked_Color.Change_Height(red.height + 1)
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            if (red.position == Rolled_Number) and (red.camel_above == None): #check occupied space, check if camel is above
+                red.Change_Camel_Above(Appended_Color) #changing None to string color
+                Picked_Color.Change_Camel_Below("RED") 
+                Picked_Color.Change_Height(red.height + 1)
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
 
-        elif (blue.position == Rolled_Number) and (blue.camel_above == None):
-            blue.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("BLUE")
-            Picked_Color.Change_Height(blue.height + 1)
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            elif (blue.position == Rolled_Number) and (blue.camel_above == None):
+                blue.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("BLUE")
+                Picked_Color.Change_Height(blue.height + 1)
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
 
-        elif (green.position == Rolled_Number) and (green.camel_above == None):
-            green.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("GREEN")
-            Picked_Color.Change_Height(green.height + 1)
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            elif (green.position == Rolled_Number) and (green.camel_above == None):
+                green.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("GREEN")
+                Picked_Color.Change_Height(green.height + 1)
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
 
-        elif (yellow.position == Rolled_Number) and (yellow.camel_above == None):
-            yellow.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("YELLOW")
-            Picked_Color.Change_Height(yellow.height + 1)
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            elif (yellow.position == Rolled_Number) and (yellow.camel_above == None):
+                yellow.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("YELLOW")
+                Picked_Color.Change_Height(yellow.height + 1)
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
 
-        elif (purple.position == Rolled_Number) and (purple.camel_above == None):
-            purple.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("PURPLE")
-            Picked_Color.Change_Height(purple.height + 1)
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            elif (purple.position == Rolled_Number) and (purple.camel_above == None):
+                purple.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("PURPLE")
+                Picked_Color.Change_Height(purple.height + 1)
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
 
-        else:
-            Picked_Color.Change_Position(Rolled_Number)
-            First_Dict[Rolled_Number] = True
-            Second_Dict[Rolled_Number] = Picked_Color.height
+            else:
+                Picked_Color.Change_Position(Rolled_Number)
+                First_Dict[Rolled_Number] = True
+                Second_Dict[Rolled_Number] = Picked_Color.height
     
-    B_W_List = ["BLACK", "WHITE"]
-    for i in range(0,2):
-        Appended_Color = random.choice(B_W_List) #picks color from Color_List
-        B_W_List.remove(Appended_Color)
-        Rolled_Number = random.randint(1,3) #1,2,3
-        Picked_Color = Color_Dict[Appended_Color]
+        B_W_List = ["BLACK", "WHITE"]
+        for i in range(0,2):
+            Appended_Color = random.choice(B_W_List) #picks color from Color_List
+            B_W_List.remove(Appended_Color)
+            Rolled_Number = random.randint(1,3) #1,2,3
+            Picked_Color = Color_Dict[Appended_Color]
 
-        if (black.position == 17 - Rolled_Number) and (black.camel_above == None):
-            black.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("BLACK")
-            Picked_Color.Change_Height(black.height + 1)
-            Picked_Color.Change_Position_B_or_W(Rolled_Number)
-            First_Dict[17 - Rolled_Number] = True
-            Second_Dict[17 - Rolled_Number] = Picked_Color.height
+            if (black.position == 17 - Rolled_Number) and (black.camel_above == None):
+                black.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("BLACK")
+                Picked_Color.Change_Height(black.height + 1)
+                Picked_Color.Change_Position_B_or_W(Rolled_Number)
+                First_Dict[17 - Rolled_Number] = True
+                Second_Dict[17 - Rolled_Number] = Picked_Color.height
 
-        elif (white.position == 17 - Rolled_Number) and (white.camel_above == None):       
-            white.Change_Camel_Above(Appended_Color)
-            Picked_Color.Change_Camel_Below("WHITE")
-            Picked_Color.Change_Height(white.height + 1)
-            Picked_Color.Change_Position_B_or_W(Rolled_Number)
-            First_Dict[17 - Rolled_Number] = True
-            Second_Dict[17 - Rolled_Number] = Picked_Color.height
+            elif (white.position == 17 - Rolled_Number) and (white.camel_above == None):       
+                white.Change_Camel_Above(Appended_Color)
+                Picked_Color.Change_Camel_Below("WHITE")
+                Picked_Color.Change_Height(white.height + 1)
+                Picked_Color.Change_Position_B_or_W(Rolled_Number)
+                First_Dict[17 - Rolled_Number] = True
+                Second_Dict[17 - Rolled_Number] = Picked_Color.height
 
-        else:
-            Picked_Color.Change_Position_B_or_W(Rolled_Number)
-            First_Dict[17 - Rolled_Number] = True
-            Second_Dict[17 - Rolled_Number] = Picked_Color.height
+            else:
+                Picked_Color.Change_Position_B_or_W(Rolled_Number)
+                First_Dict[17 - Rolled_Number] = True
+                Second_Dict[17 - Rolled_Number] = Picked_Color.height
 
-    Current_Round = 0
-    #Print_Out_Beginning_Board(Color_Dict, Current_Round, Color_Def_Dict)                    #FUNCTION TO PRINT OUT BEGINNING BOARD ***********
-    # ^^^ All above is to print the board game, below is to play game
+        return Second_Dict
+
+    def OPTION_2_INPUT_DATA(): #return Second_Dict
+        NewListInput = """[['Blue', 'Red', 'Purple', 'Yellow', 'Green'], [3, 3, 2, 2, 2], [2, 1, 3, 2, 1]]
+        for number in range(0,5):
+            Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Set_Position(NewListInput[1][number])
+            Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Height(NewListInput[2][number])
+            if number == 0:
+                Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
+                if NewListInput[2][number] > 1:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(Color_Dict_CapLow[NewListInput[0][1]])
+                else:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(None)
+            elif number == 4:
+                Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(None)
+                if NewListInput[2][number-1] > 1:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(Color_Dict_CapLow[NewListInput[0][3]])
+                else:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
+            else:
+                if NewListInput[2][number] == 1:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(None)
+                    if NewListInput[2][number-1] == 1:
+                        Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
+                    else:
+                        Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(Color_Dict_CapLow[NewListInput[0][number-1]])
+                else:
+                    Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Below(Color_Dict_CapLow[NewListInput[0][number+1]])
+                    if NewListInput[2][number-1] == 1:
+                        Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(None)
+                    else:
+                        Color_Dict[Color_Dict_CapLow[NewListInput[0][number]]].Change_Camel_Above(Color_Dict_CapLow[NewListInput[0][number-1]])
+
+            First_Dict[NewListInput[1][number]] = True
+            Second_Dict[NewListInput[2][number]] = 1 + Second_Dict[NewListInput[2][number]]"""
+
+
+        First_Dict = {                   #delete                                                      #Dict to reconize if spaces are taken
+            1:False, 2:True, 3:True, 4:False, 5:False, 6:False, 7:False, 8:False, 
+            9:False, 10:False, 11:False, 12:False, 13:False, 14:False, 15:True, 16:True, 17:False
+        }
+        Second_Dict = {                 #delete                                          #Dict for heights on each space
+            1:0, 2:3, 3:2, 4:0, 5:0, 6:0, 7:0, 8:0, 
+            9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:1, 16:1, 17:0
+        } 
+        red.Set_Position(3)
+        red.Change_Height(1)
+        red.Change_Camel_Above("BLUE")   #COLOR or None
+        red.Change_Camel_Below(None)   #COLOR or None
+    
+        blue.Set_Position(3)
+        blue.Change_Height(2)
+        blue.Change_Camel_Above(None)  #COLOR or None
+        blue.Change_Camel_Below("RED")  #COLOR or None
+
+        green.Set_Position(2)
+        green.Change_Height(1)
+        green.Change_Camel_Above("YELLOW") #COLOR or None
+        green.Change_Camel_Below(None) #COLOR or None
+
+        purple.Set_Position(2)
+        purple.Change_Height(3)
+        purple.Change_Camel_Above(None) #COLOR or None
+        purple.Change_Camel_Below("YELLOW") #COLOR or None
+    
+        yellow.Set_Position(2)
+        yellow.Change_Height(2)
+        yellow.Change_Camel_Above("PURPLE") #COLOR or None
+        yellow.Change_Camel_Below("GREEN") #COLOR or None
+
+        black.Set_Position(16)
+        black.Change_Height(1)
+        black.Change_Camel_Above(None) #COLOR or None
+        black.Change_Camel_Below(None) #COLOR or None
+        First_Dict[16] = True
+        Second_Dict[16] = 1
+
+        white.Set_Position(15)        #Starting positon 17
+        white.Change_Height(1)          #Starting height is 1
+        white.Change_Camel_Above(None) #COLOR or None
+        white.Change_Camel_Below(None) #COLOR or None
+        First_Dict[15] = True
+        Second_Dict[15] = 1
+
+        return Second_Dict
+
+    #### CHANGEING RETURN INTO USEABLE First_Dict & Second_Dict ####
+
+    #############################################
+    #  PICK AN OPTION FOR INPUT                 #
+    #   1) OPTION_1_RANDOM_DATA()               #
+    #   2) OPTION_2_INPUT_DATA()                #
+    #                                           #
+    # OPTION 1) Sets a random game state        #
+    # OPTION 2) Allows for a set game state     #
+    #############################################
+
+    Second_Dict = OPTION_2_INPUT_DATA() #Either OPTION_1_RANDOM_DATA() or OPTION_2_INPUT_DATA()
+
+    for i in range(1, 18):
+        if Second_Dict[i] != 0:
+            First_Dict[i] = True
 
     #### APPENDING TO RETURN LIST ####
 
@@ -288,7 +356,7 @@ def PLAY_GAME():
     Printable_Array_List.append(Appeading_To_PAL)
 
     #### ACTUALLY PLAYING THE GAME ####
-
+    Current_Round = 0
     Winner_Found = False
     Done = False                                                                                    #SETTING UP HOW MANY GAMES 
     Number_of_Total_Roles = 0
@@ -652,7 +720,6 @@ def PLAY_GAME():
                 Found_True_Color = True
         #print("\nWinner Camel: {}     Number of Rounds: {}".format(Color.color, Final_Round))   
     return Printable_Array_List
-    #Print_Out_Final_Board(Color_Dict, Current_Round, Color_Def_Dict)                         #FUNCTION TO PRINT OUT END BOARD ***********
     
 def OrderingGameOutput(): #WORKS
     
@@ -710,56 +777,72 @@ def OrderingGameOutput(): #WORKS
 def WriteToTXTFile(ListFromRound): #DONE
     Data = ListFromRound
     Data = str(Data)
-    Path = "C:/Users/mattg/OneDrive/Documents/College/5th Year/Camel Up/Output_For_CamelUp.txt"
+    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp.txt"      #Path chnaged based on computer
+   
     with open(Path, "a") as file:
-            file.writelines("\n")
-            file.writelines(Data)
+        file.writelines("\n")
+        file.writelines(Data)
 
 def NumberOfGamesRan(): #DONE
     Number = int(input("How many games should be played (ex. 3): "))
     for rounds in range(0,Number):
         WriteToTXTFile(OrderingGameOutput())
+
+def RunOutputTXTFileProbability(): #returns probability #DONE
+    CorrectOrientationList = []
+    UserInputList = input("Starting position list such as [['Blue', 'Red', 'Purple', 'Yellow', 'Green'], [3, 3, 2, 2, 2], [2, 1, 3, 2, 1]]: ")
+    UserInterestedColor = input("Color probability selection (Blue/Red/Purple/Yellow/Green): ")
+    ChoosenColor = 5 #changed to 0 through 4
+    ColorList = ['Blue', 'Red', 'Purple', 'Yellow', 'Green']
+    StartingLetter = UserInterestedColor[0]
+    for t in range(0,len(ColorList)):
+        if ColorList[t] == UserInterestedColor:
+            ChoosenColor = t
+
+    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp.txt" #Path chnaged based on computer
+    with open(Path, "r") as file:
+        for row in file: 
+            if UserInputList in row:
+                x = ast.literal_eval(row)
+                CorrectOrientationList.append(x)
     
-def CreateTable(InputList):
+    #start finding the probability
+    FoundToBeFirst = 0
+    FoundToBeSecond = 0
+    FoundToBeThirdOrHigher = 0
+    TotalGamesAnalyzed = len(CorrectOrientationList)
+
+    for row in range(0,len(CorrectOrientationList)):
+        FirstSublist = CorrectOrientationList[row][0][0] #first list is game, then round, then individual list
+        SecondSublist = CorrectOrientationList[row][1][0]
+        OrderedWinnerList = [SecondSublist.index(FirstSublist[i]) for i in range(5)] #Example: [1, 0, 3, 4, 2]
+        if OrderedWinnerList[ChoosenColor] == 0: #found to be first
+            FoundToBeFirst += 1
+        elif OrderedWinnerList[ChoosenColor] == 1: #found to be second
+            FoundToBeSecond += 1
+        else:
+            FoundToBeThirdOrHigher += 1
+    ExpectedValue = ["P({}=1) = {}".format(StartingLetter,FoundToBeFirst), "P({}=2) = {}".format(StartingLetter,FoundToBeSecond), "P({}>=3) = {}".format(StartingLetter,FoundToBeThirdOrHigher), "Total Games Analyzed: {}".format(TotalGamesAnalyzed)]
+    #used for p(b=1)*2 + p(b=2)*1 + p(b>=3)*-1
+    #return CorrectOrientationList
+    return ExpectedValue
+
+def CreateTable(InputList): #NOT DONE
     Headings = ["1st Place","2nd Place", "3rd Place", "4th Place", "5th PLace"]
     #### PUT ON HOLD, NOT AS USEFUL ANYMORE ####
-
-
-
-
-
-
-
 
  
 
 
-#READ_IN_UPDATE_EXCEL_File()                                                                                #FILE TO READ TO EXCEL SHEET
+#### GLOBAL ASSIGNMENT ####
 
-#v = [[red.color, red.position, red.height, red.camel_above, red.camel_below],                              #USED TO CHECK
-#    [blue.color, blue.position, blue.height, blue.camel_above, blue.camel_below],                          #USED TO CHECK
-#    [green.color, green.position, green.height, green.camel_above, green.camel_below],                     #USED TO CHECK
-#    [yellow.color,yellow.position, yellow.height, yellow.camel_above, yellow.camel_below],                 #USED TO CHECK
-#    [purple.color, purple.position, purple.height, purple.camel_above, purple.camel_below],                #USED TO CHECK
-#    [black.color,black.position, black.height, black.camel_above, black.camel_below],                      #USED TO CHECK
-#    [white.color, white.position, white.height, white.camel_above, white.camel_below]]                     #USED TO CHECK
-#print(First_Dict)                                                                                          #USED TO CHECK
-#print(Second_Dict)                                                                                         #USED TO CHECK
-#print("\n{:<8} {:<15} {:<10} {:<10} {:<10}".format('Color','Position','Height','C_Above','C_Below'))       #USED TO CHECK
-#for d in range(0,7):                                                                                       #USED TO CHECK
-#    print("{:<8} {:<15} {:<10} {:<10} {:<10}".format(v[d][0], v[d][1], v[d][2], v[d][3], v[d][4]))         #USED TO CHECK
-
-
-
-
-
-red = Camel("RED") #global assignment
+red = Camel("RED")
 blue = Camel("BLUE")
 green = Camel("GREEN")
 yellow = Camel("YELLOW")
 purple = Camel("PURPLE")
 black = Camel("BLACK")
 white = Camel("WHITE")
-NumberOfGamesRan()
-#print(OrderingGameOutput())
-#CreateTable(Create_3D_Array())
+
+#NumberOfGamesRan() # \\ RUNS GAMES
+print(RunOutputTXTFileProbability())# \\ RUNS PROBABILITY
