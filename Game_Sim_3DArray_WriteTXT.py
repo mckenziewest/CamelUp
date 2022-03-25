@@ -776,7 +776,7 @@ def OrderingGameOutput(UserInputList): #WORKS
 def WriteToTXTFile(ListFromRound): #DONE
     Data = ListFromRound
     Data = str(Data)
-    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp.txt"      #Path chnaged based on computer
+    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp2.txt"      #Path chnaged based on computer
    
     with open(Path, "a") as file:
         file.writelines("\n")
@@ -790,15 +790,10 @@ def NumberOfGamesRan(UserInputList): #DONE
 def RunOutputTXTFileProbability(): #returns probability #DONE
     CorrectOrientationList = []
     UserInputList = input("Starting position list such as [['Blue', 'Red', 'Purple', 'Yellow', 'Green'], [3, 3, 2, 2, 2], [2, 1, 3, 2, 1]]: ")
-    UserInterestedColor = input("Color probability selection (Blue/Red/Purple/Yellow/Green): ")
-    ChoosenColor = 5 #changed to 0 through 4
-    ColorList = ['Blue', 'Red', 'Purple', 'Yellow', 'Green']
-    StartingLetter = UserInterestedColor[0]
-    for t in range(0,len(ColorList)):
-        if ColorList[t] == UserInterestedColor:
-            ChoosenColor = t
+    UserInterestedColor = input("Color probability selection (Blue/Red/Green/Purple/Yellow): ")
+    ChoosenColor = 6 #changed to 0 through 4
 
-    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp.txt" #Path chnaged based on computer
+    Path = "/Users/mattgilbert/Downloads/College/5th Year/Camel Up/Output_For_CamelUp2.txt" #Path chnaged based on computer
     with open(Path, "r") as file:
         for row in file: 
             if UserInputList in row:
@@ -806,6 +801,10 @@ def RunOutputTXTFileProbability(): #returns probability #DONE
                 CorrectOrientationList.append(x)
     
     #start finding the probability
+    for john in range(0,5):
+        if CorrectOrientationList[0][0][0][john] == UserInterestedColor:
+            ChoosenColor = john
+    
     FoundToBeFirst = 0
     FoundToBeSecond = 0
     FoundToBeThirdOrHigher = 0
@@ -821,7 +820,8 @@ def RunOutputTXTFileProbability(): #returns probability #DONE
             FoundToBeSecond += 1
         else:
             FoundToBeThirdOrHigher += 1
-    ExpectedValue = ["P({}=1) = {}".format(StartingLetter,FoundToBeFirst), "P({}=2) = {}".format(StartingLetter,FoundToBeSecond), "P({}>=3) = {}".format(StartingLetter,FoundToBeThirdOrHigher), "Total Games Analyzed: {}".format(TotalGamesAnalyzed)]
+    #ExpectedValue = ["P({}=1) = {}".format(StartingLetter,FoundToBeFirst), "P({}=2) = {}".format(StartingLetter,FoundToBeSecond), "P({}>=3) = {}".format(StartingLetter,FoundToBeThirdOrHigher), "Total Games Analyzed: {}".format(TotalGamesAnalyzed)]
+    ExpectedValue = [FoundToBeFirst,FoundToBeSecond,FoundToBeThirdOrHigher,TotalGamesAnalyzed]
     #used for p(b=1)*2 + p(b=2)*1 + p(b>=3)*-1
     #return CorrectOrientationList
     return ExpectedValue
@@ -838,7 +838,13 @@ def RunOrAnalyzeGames():
         ## [['Purple', 'Yellow', 'Green', 'Blue', 'Red'], [3, 3, 2, 1, 1], [2, 1, 1, 2, 1]]
         NumberOfGamesRan(UserInputList)
     else:
-        print(RunOutputTXTFileProbability())
+        newlist = RunOutputTXTFileProbability() #[400,100,200,700]
+        calc = ((newlist[0]/newlist[3])*5)+((newlist[1]/newlist[3])*1)+((newlist[2]/newlist[3])*(-1))
+        print(" ")
+        print(newlist)
+        print(calc)
+        print(" ")
+        #print(RunOutputTXTFileProbability())
 
 #### GLOBAL ASSIGNMENT ####
 
@@ -851,12 +857,18 @@ black = Camel("BLACK")
 white = Camel("WHITE")
 RunOrAnalyzeGames()
 
+#[['Blue', 'Red', 'Green', 'Purple', 'Yellow'], [3, 3, 3, 2, 1], [3, 2, 1, 1, 1]]
+
     #############################################
     #  BEFORE RUNNING                           #
-    #   1) CHECK LINE 801                       #
+    #   1) CHECK LINE 801 & 779                 #
     #      This line but be the file path to    #
     #      where the Output_For_CamelUp.txt     #
     #      is saved to. Replace the string with #
     #      your file path                       #
+    #   2) Remember to enter up to 1000 games   #
+    #      to play if thats the path choosen    #
+    #      as an error arrises every 5000 games #
+    #      or so. If an error happens, retry    #
     #                                           #
     #############################################
