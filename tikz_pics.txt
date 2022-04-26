@@ -1,0 +1,35 @@
+\definecolor{Blue}{RGB}{13, 41, 255}
+\definecolor{Red}{RGB}{255, 51, 5}
+\definecolor{Green}{RGB}{27, 148, 37}
+\definecolor{Purple}{RGB}{101, 24, 173}
+\definecolor{Yellow}{RGB}{201, 195, 18}
+
+\begin{tikzpicture}
+	\coordinate (B) at (4.5,1.0);
+	\coordinate (R) at (4.5,0.5);
+	\coordinate (G) at (2.5,1.5);
+	\coordinate (P) at (2.5,1.0);
+	\coordinate (Y) at (2.5,0.5);
+	\node at (B) {\color{Blue} Blue};
+	\node at (R) {\color{Red} Red};
+	\node at (G) {\color{Green} Green};
+	\node at (P) {\color{Purple} Purple};
+	\node at (Y) {\color{Yellow} Yellow};
+	\foreach\x in {1,2,3}
+		\draw (2*\x,0) -- ++(1,0) node[midway, below] {$\x$};
+\end{tikzpicture}
+
+\begin{tikzpicture}
+	\coordinate (R) at (6.5,0.5);
+	\coordinate (B) at (4.5,0.5);
+	\coordinate (G) at (2.5,1.5);
+	\coordinate (P) at (2.5,1.0);
+	\coordinate (Y) at (2.5,0.5);
+	\node at (B) {\color{Blue} Blue};
+	\node at (R) {\color{Red} Red};
+	\node at (G) {\color{Green} Green};
+	\node at (P) {\color{Purple} Purple};
+	\node at (Y) {\color{Yellow} Yellow};
+	\foreach\x in {1,2,3}
+		\draw (2*\x,0) -- ++(1,0) node[midway, below] {$\x$};
+\end{tikzpicture}
